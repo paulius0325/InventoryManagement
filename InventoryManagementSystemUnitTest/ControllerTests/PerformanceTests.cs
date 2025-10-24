@@ -24,7 +24,7 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
             await ctx.SaveChangesAsync();
             sw.Stop();
 
-            // Example threshold — in-memory insert should be very fast; adjust to your machine.
+           
             Assert.True(sw.ElapsedMilliseconds < 2000, $"Inserts took too long: {sw.ElapsedMilliseconds}ms");
         }
     }
