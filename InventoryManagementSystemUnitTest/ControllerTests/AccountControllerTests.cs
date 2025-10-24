@@ -47,7 +47,7 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
             var session = new TestSession();
             httpContext.Features.Set<ISessionFeature>(new SessionFeature { Session = session });
 
-            // ✅ Manually assign Session
+   
             httpContext.Session = session;
 
             controller.ControllerContext = new ControllerContext
