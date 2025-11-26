@@ -2,7 +2,7 @@
 using Inventory_Management_System.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Xunit; // Make sure you have xUnit
+using Xunit; 
 
 namespace InventoryManagementSystemUnitTest.ControllerTests
 {
@@ -55,6 +55,17 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
             Assert.Equal(1, ctx.Items.Count());
             var saved = ctx.Items.First();
             Assert.Equal("Keyboard", saved.Name);
+        }
+
+        [Fact]
+        public async Task Edit_InvalidId_ReturnsNotFound()
+        {
+            var ctx = CreateContext("Items_InvalidEdit");
+            var controller = new ItemsController(ctx);
+
+            var result = await controller.Edit(99, new Item { ItemId = 1 });
+
+            Assert.IsType<NotFoundResult>(result);
         }
     }
 }

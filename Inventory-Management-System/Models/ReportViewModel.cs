@@ -4,6 +4,6 @@
     {
         public int TotalProducts { get; set; }
         public int TotalOrders { get; set; }
-        public List<Item> LowStockItems { get; set; }
+        public List<Item>? LowStockItems { get; set; }
     }
 }

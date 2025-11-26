@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Inventory_Management_System.Models;
-using System.Linq;
+﻿using Inventory_Management_System.Models;
+using Microsoft.AspNetCore.Mvc;
 
 public class ReportsController : Controller
 {

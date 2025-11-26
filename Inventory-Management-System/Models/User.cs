@@ -26,7 +26,7 @@ namespace Inventory_Management_System.Models
         public string Phone { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Role is required.")]
-        public string Role { get; set; } 
+        public string? Role { get; set; }
 
     }
 }

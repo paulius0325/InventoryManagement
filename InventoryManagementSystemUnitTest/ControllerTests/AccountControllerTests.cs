@@ -14,6 +14,9 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
 {
     public class AccountControllerTests
     {
+
+
+
         private InventoryDbContext CreateContext(string dbName)
         {
             var options = new DbContextOptionsBuilder<InventoryDbContext>()
@@ -32,13 +35,13 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
 
             var controller = new AccountController(ctx);
 
-            // Proper service provider setup
+            // service provider setup
             var services = new ServiceCollection();
             services.AddDistributedMemoryCache();
             services.AddSession();
             var serviceProvider = services.BuildServiceProvider();
 
-            // Create HttpContext and attach a working Session
+
             var httpContext = new DefaultHttpContext
             {
                 RequestServices = serviceProvider
@@ -47,7 +50,7 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
             var session = new TestSession();
             httpContext.Features.Set<ISessionFeature>(new SessionFeature { Session = session });
 
-            // ✅ Manually assign Session
+
             httpContext.Session = session;
 
             controller.ControllerContext = new ControllerContext
@@ -89,5 +92,7 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
             var view = Assert.IsType<ViewResult>(result);
             Assert.Equal("Invalid username or password.", controller.ViewBag.Error);
         }
+
+
     }
 }

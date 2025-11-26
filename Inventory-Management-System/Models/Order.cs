@@ -8,8 +8,8 @@ namespace Inventory_Management_System.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderId { get; set; }
         [ForeignKey("Item")]
-        public int ? ItemId { get; set; }
-        public Item ? Item { get; set; } = null!;  // Foreign key
+        public int? ItemId { get; set; }
+        public Item? Item { get; set; } = null!;  // Foreign key
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be a positive integer.")]
         public int Quantity { get; set; }
 

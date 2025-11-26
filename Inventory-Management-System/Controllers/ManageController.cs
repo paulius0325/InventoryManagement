@@ -1,5 +1,4 @@
-﻿using Inventory_Management_System.Models;
-using Microsoft.AspNetCore.Mvc; 
+﻿using Microsoft.AspNetCore.Mvc;
 
 public class ManagerController : Controller
 {

@@ -1,6 +1,6 @@
-using System.Diagnostics;
 using Inventory_Management_System.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Inventory_Management_System.Controllers
 {

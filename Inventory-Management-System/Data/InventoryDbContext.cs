@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Inventory_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
-using Inventory_Management_System.Models;
 
 public class InventoryDbContext : DbContext
 {

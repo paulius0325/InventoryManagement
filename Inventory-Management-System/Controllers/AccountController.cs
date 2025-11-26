@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Inventory_Management_System.Models;
-using System.Linq;
 
 namespace Inventory_Management_System.Controllers
 {
@@ -37,8 +34,8 @@ namespace Inventory_Management_System.Controllers
 
             if (user != null)
             {
-                HttpContext.Session.SetString("Username", user.Username);
-                HttpContext.Session.SetString("Role", user.Role);
+                HttpContext.Session.SetString("Username", user.Username ?? "Unknown");
+                HttpContext.Session.SetString("Role", user.Role ?? "User");
 
                 return user.Role switch
                 {

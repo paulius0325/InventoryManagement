@@ -1,6 +1,5 @@
-﻿using Inventory_Management_System.Models;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 [Authorize(Roles = "Supplier")] // Optional: restrict access to suppliers only
