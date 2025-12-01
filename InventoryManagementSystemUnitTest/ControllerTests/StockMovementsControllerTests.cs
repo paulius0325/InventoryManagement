@@ -2,6 +2,8 @@
 using Inventory_Management_System.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using Xunit;
 
 namespace InventoryManagementSystemUnitTest.ControllerTests
@@ -135,6 +137,155 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
             var result = await controller.Details(-1);
 
             Assert.IsType<NotFoundResult>(result);
+        }
+
+        //Create GET returns view
+        [Fact]
+        public void Create_Get_ReturnsView()
+        {
+            var ctx = CreateDb("SM_Create_Get");
+            var controller = new StockMovementsController(ctx);
+
+            var result = controller.Create();
+
+            Assert.IsType<ViewResult>(result);
+        }
+
+        //Details valid entry returns View with model
+        [Fact]
+        public async Task Details_ValidId_ReturnsViewWithModel()
+        {
+            var ctx = CreateDb("SM_DetailsValid");
+
+            var item = new Item { Name = "Box" };
+            ctx.Items.Add(item);
+
+            var movement = new StockMovement
+            {
+                ItemId = item.ItemId,
+                Action = "Added",
+                QuantityChanged = 10
+            };
+
+            ctx.StockMovements.Add(movement);
+            await ctx.SaveChangesAsync();
+
+            var controller = new StockMovementsController(ctx);
+
+            var result = await controller.Details(movement.StockMovementId);
+
+            var view = Assert.IsType<ViewResult>(result);
+            Assert.IsType<StockMovement>(view.Model);
+        }
+
+        //Edit GET (valid entry)
+        [Fact]
+        public async Task Edit_Get_Valid_ReturnsViewWithModel()
+        {
+            var ctx = CreateDb("SM_Edit_Get_Valid");
+
+            var movement = new StockMovement
+            {
+                ItemId = 1,
+                Action = "Added",
+                QuantityChanged = 5
+            };
+
+            ctx.StockMovements.Add(movement);
+            await ctx.SaveChangesAsync();
+
+            var controller = new StockMovementsController(ctx);
+
+            var result = await controller.Edit(movement.StockMovementId);
+
+            var view = Assert.IsType<ViewResult>(result);
+            Assert.IsType<StockMovement>(view.Model);
+        }
+
+        //Edit GET Missing Entry
+        [Fact]
+        public async Task Edit_Get_Missing_ReturnsNotFound()
+        {
+            var ctx = CreateDb("SM_Edit_Get_NotFound");
+            var controller = new StockMovementsController(ctx);
+
+            var result = await controller.Edit(99);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        //Edit POST — Wrong ID -> NotFound
+        [Fact]
+        public async Task Edit_Post_WrongId_ReturnsNotFound()
+        {
+            var ctx = CreateDb("SM_Edit_Post_WrongId");
+            var controller = new StockMovementsController(ctx);
+
+            var movement = new StockMovement { StockMovementId = 2, ItemId = 1, Action = "Removed", QuantityChanged = 5 };
+
+            var result = await controller.Edit(1, movement);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        //Edit POST — Invalid Model -> Returns View With Model
+        [Fact]
+        public async Task Edit_Post_InvalidModel_ReturnsView()
+        {
+            var ctx = CreateDb("SM_Edit_Post_Invalid");
+
+            var movement = new StockMovement
+            {
+                ItemId = 1,
+                Action = "Added",
+                QuantityChanged = 5
+            };
+
+            ctx.StockMovements.Add(movement);
+            await ctx.SaveChangesAsync();
+
+            var controller = new StockMovementsController(ctx);
+            controller.ModelState.AddModelError("Action", "Required");
+
+            var result = await controller.Edit(movement.StockMovementId, movement);
+
+            Assert.IsType<ViewResult>(result);
+            Assert.Equal(movement, ((ViewResult)result).Model);
+        }
+
+        //Edit POST — Valid Update Redirects
+        [Fact]
+        public async Task Edit_Post_Valid_UpdatesAndRedirects()
+        {
+            var ctx = CreateDb("SM_Edit_Post_Valid");
+
+            var movement = new StockMovement
+            {
+                ItemId = 1,
+                Action = "Added",
+                QuantityChanged = 5
+            };
+
+            ctx.StockMovements.Add(movement);
+            await ctx.SaveChangesAsync();
+
+            // Detach the original entity to simulate real HTTP post request
+            ctx.Entry(movement).State = EntityState.Detached;
+
+            var controller = new StockMovementsController(ctx);
+
+            var updated = new StockMovement
+            {
+                StockMovementId = movement.StockMovementId,
+                ItemId = 1,
+                Action = "Updated",
+                QuantityChanged = 99
+            };
+
+            var result = await controller.Edit(movement.StockMovementId, updated);
+
+            Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal(99, ctx.StockMovements.First().QuantityChanged);
         }
     }
 }

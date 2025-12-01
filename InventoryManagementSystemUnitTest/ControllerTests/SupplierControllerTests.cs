@@ -106,5 +106,53 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
             Assert.Equal(0, controller.ViewBag.TotalProductsSupplied);
             Assert.Equal(0, controller.ViewBag.SupplyReportCount);
         }
+
+        //Supplier role missing -> should still return View
+        [Fact]
+        public void Index_NoRole_ReturnsView()
+        {
+            var ctx = CreateDb("Supplier_NoRole");
+
+            // CreateController(null, "SUP001") → no role stored
+            var controller = CreateController(null, "SUP001", ctx);
+
+            var result = controller.Index();
+
+            Assert.IsType<ViewResult>(result);
+        }
+
+        //Role is Supplier but no SupplierId Identity -> expected behavior
+        [Fact]
+        public void Index_SupplierRoleButNoIdentity_ReturnsViewWith0Stats()
+        {
+            var ctx = CreateDb("Supplier_NoIdentity");
+
+            var controller = CreateController("Supplier", null, ctx);
+
+            var result = controller.Index();
+
+            Assert.IsType<ViewResult>(result);
+            Assert.Equal(0, controller.ViewBag.PendingDeliveries);
+            Assert.Equal(0, controller.ViewBag.TotalProductsSupplied);
+            Assert.Equal(0, controller.ViewBag.SupplyReportCount);
+        }
+
+        //Stress edge case: SupplierId exists but no matching DB records
+        [Fact]
+        public void Index_SupplierIdDoesNotMatchRecords_ReturnsZero()
+        {
+            var ctx = CreateDb("Supplier_NoMatch");
+
+            ctx.Items.Add(new Item { Name = "Mouse", Quantity = 5 });
+            ctx.SaveChanges();
+
+            var controller = CreateController("Supplier", "OTHER_SUPPLIER", ctx);
+
+            var result = controller.Index();
+
+            Assert.IsType<ViewResult>(result);
+            Assert.Equal(0, controller.ViewBag.PendingDeliveries);
+            Assert.Equal(0, controller.ViewBag.TotalProductsSupplied);
+        }
     }
 }

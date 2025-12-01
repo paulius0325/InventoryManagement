@@ -125,5 +125,60 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
             Assert.Equal(1, controller.ViewBag.TotalReports);
             Assert.Equal(2, controller.ViewBag.LowStockItems); 
         }
+
+        //Index() returns view
+        [Fact]
+        public void Index_ReturnsView()
+        {
+            var controller = CreateController("Manager", "Home_IndexTest");
+
+            var result = controller.Index();
+
+            Assert.IsType<ViewResult>(result);
+        }
+
+        //Privacy() returns view
+        [Fact]
+        public void Privacy_ReturnsView()
+        {
+            var controller = CreateController("User", "Home_PrivacyTest");
+
+            var result = controller.Privacy();
+
+            Assert.IsType<ViewResult>(result);
+        }
+
+        //Error() returns view with ErrorViewModel
+        [Fact]
+        public void Error_ReturnsViewWithErrorModel()
+        {
+            var controller = CreateController("Manager", "Home_ErrorTest");
+
+            var result = controller.Error();
+
+            var view = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<ErrorViewModel>(view.Model);
+
+            Assert.False(string.IsNullOrWhiteSpace(model.RequestId));
+        }
+
+        [Theory]
+        [InlineData("Supplier", "ManagerDashboard")]
+        [InlineData("User", "WarehouseDashboard")]
+        public void UnauthorizedDashboardAccess_RedirectsToLogin(string role, string target)
+        {
+            var controller = CreateController(role, $"Unauthorized_{role}");
+
+            IActionResult result = target switch
+            {
+                "ManagerDashboard" => controller.ManagerDashboard(),
+                "WarehouseDashboard" => controller.WarehouseDashboard(),
+                _ => throw new NotImplementedException()
+            };
+
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Login", redirect.ActionName);
+            Assert.Equal("Account", redirect.ControllerName);
+        }
     }
 }

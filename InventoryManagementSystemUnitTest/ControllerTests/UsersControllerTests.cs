@@ -178,5 +178,111 @@ namespace InventoryManagementSystemUnitTest.ControllerTests
 
             Assert.Empty(ctx.Users);
         }
+
+        //GET Create() Should Return View
+        [Fact]
+        public void Create_Get_ReturnsView()
+        {
+            var ctx = CreateDb("Users_Create_Get");
+            var controller = new UsersController(ctx);
+
+            var result = controller.Create();
+
+            Assert.IsType<ViewResult>(result);
+        }
+
+        //GET Details Valid User Returns View
+        [Fact]
+        public async Task Details_ValidId_ReturnsViewWithUser()
+        {
+            var ctx = CreateDb("Users_Details_Valid");
+            var user = new User { Username = "test", Email = "t@test.com", Password = "pw", Role = "User" };
+            ctx.Users.Add(user);
+            await ctx.SaveChangesAsync();
+
+            var controller = new UsersController(ctx);
+
+            var result = await controller.Details(user.UserId);
+
+            var view = Assert.IsType<ViewResult>(result);
+            Assert.IsType<User>(view.Model);
+        }
+
+        //GET Edit(id) Valid ID -> View
+        [Fact]
+        public async Task Edit_Get_ValidId_ReturnsView()
+        {
+            var ctx = CreateDb("Users_Edit_Get");
+            var user = new User { Username = "edit", Email = "e@test.com", Password = "pw", Role = "User" };
+            ctx.Users.Add(user);
+            await ctx.SaveChangesAsync();
+
+            var controller = new UsersController(ctx);
+
+            var result = await controller.Edit(user.UserId);
+
+            var view = Assert.IsType<ViewResult>(result);
+            Assert.IsType<User>(view.Model);
+        }
+
+        //Edit POST Invalid Model -> Return View
+        [Fact]
+        public async Task Edit_InvalidModel_ReturnsView()
+        {
+            var ctx = CreateDb("Users_Edit_Invalid");
+            var user = new User { Username = "temp", Email = "temp@test.com", Password = "pw", Role = "User" };
+            ctx.Users.Add(user);
+            await ctx.SaveChangesAsync();
+
+            var controller = new UsersController(ctx);
+            controller.ModelState.AddModelError("Username", "Required");
+
+            // detached simulating new POST
+            ctx.Entry(user).State = EntityState.Detached;
+
+            var result = await controller.Edit(user.UserId, user);
+
+            Assert.IsType<ViewResult>(result);
+        }
+
+        //GET Delete Valid ID -> View
+        [Fact]
+        public async Task Delete_Get_ValidId_ReturnsView()
+        {
+            var ctx = CreateDb("Users_Delete_Get");
+            var user = new User { Username = "del", Email = "d@test.com", Password = "pw", Role = "User" };
+            ctx.Users.Add(user);
+            await ctx.SaveChangesAsync();
+
+            var controller = new UsersController(ctx);
+
+            var result = await controller.Delete(user.UserId);
+
+            var view = Assert.IsType<ViewResult>(result);
+            Assert.IsType<User>(view.Model);
+        }
+
+        [Fact]
+        public async Task Edit_Concurrency_UserMissing_ReturnsNotFound()
+        {
+            var ctx = CreateDb("Users_Edit_Concurrency");
+            var user = new User { Username = "x", Email = "x@test.com", Password = "pw", Role = "User" };
+            ctx.Users.Add(user);
+            await ctx.SaveChangesAsync();
+
+            ctx.Entry(user).State = EntityState.Detached;
+
+            // Simulate deletion before Update()
+            ctx.Users.RemoveRange(ctx.Users);
+            await ctx.SaveChangesAsync();
+
+            var controller = new UsersController(ctx);
+
+            var updated = new User { UserId = user.UserId, Username = "updated" };
+
+            var result = await controller.Edit(user.UserId, updated);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
     }
 }

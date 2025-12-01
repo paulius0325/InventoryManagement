@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<InventoryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("InventoryDbContext") ?? throw new InvalidOperationException("Connection string 'InventoryDbContext' not found.")));
@@ -37,3 +39,5 @@ app.MapControllerRoute(
 
 
 app.Run();
+
+public partial class Program { }

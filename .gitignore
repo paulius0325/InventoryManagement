@@ -32,3 +32,8 @@ packages/
 
 ## Other
 *.DS_Store
+
+/coverage-report/
+/CoverReport/
+/*.coverage
+*.runsettings
