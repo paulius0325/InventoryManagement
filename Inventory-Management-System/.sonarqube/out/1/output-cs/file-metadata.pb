@@ -1,0 +1,16 @@
+§
+òC:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\obj\Debug\net9.0\InventoryManagementSystemUnitTest.AssemblyInfo.csutf-8¶
+öC:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\obj\Debug\net9.0\InventoryManagementSystemUnitTest.GlobalUsings.g.csutf-8°
+ïC:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\obj\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.csutf-8~
+sC:\Users\mccm1\.nuget\packages\microsoft.net.test.sdk\17.12.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.Program.csutf-8ê
+ÜC:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\IntegrationTests\OrderToStockMovementFlowTest.csutf-8{
+rC:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\HelperMethods\TestSession.csutf-8Ü
+}C:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\ControllerTests\UsersControllerTests.csutf-8ä
+ÄC:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\ControllerTests\SupplierControllerTests.csutf-8ê
+ÜC:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\ControllerTests\StockMovementsControllerTests.csutf-8á
+~C:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\ControllerTests\ReportControllerTests.csutf-8Ç
+yC:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\ControllerTests\PerformanceTests.csutf-8á
+~C:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\ControllerTests\OrdersControllerTests.csutf-8Ö
+|C:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\ControllerTests\ItemsControllerTest.csutf-8Ö
+|C:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\ControllerTests\HomeControllerTests.csutf-8à
+C:\Users\mccm1\Documents\GitHub\InventoryManagement\InventoryManagementSystemUnitTest\ControllerTests\AccountControllerTests.csutf-8
